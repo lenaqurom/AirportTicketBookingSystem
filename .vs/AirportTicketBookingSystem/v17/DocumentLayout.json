@@ -3,6 +3,18 @@
   "WorkspaceRootPath": "C:\\Users\\ZBOOK\\source\\repos\\AirportTicketBookingSystem\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{F6DA5FBF-6079-47EE-9E32-48915B85275F}|AirportTicketBookingSystem.csproj|c:\\users\\zbook\\source\\repos\\airportticketbookingsystem\\models\\booking.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F6DA5FBF-6079-47EE-9E32-48915B85275F}|AirportTicketBookingSystem.csproj|solutionrelative:models\\booking.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F6DA5FBF-6079-47EE-9E32-48915B85275F}|AirportTicketBookingSystem.csproj|c:\\users\\zbook\\source\\repos\\airportticketbookingsystem\\models\\flight.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F6DA5FBF-6079-47EE-9E32-48915B85275F}|AirportTicketBookingSystem.csproj|solutionrelative:models\\flight.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F6DA5FBF-6079-47EE-9E32-48915B85275F}|AirportTicketBookingSystem.csproj|c:\\users\\zbook\\source\\repos\\airportticketbookingsystem\\models\\passenger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F6DA5FBF-6079-47EE-9E32-48915B85275F}|AirportTicketBookingSystem.csproj|solutionrelative:models\\passenger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{F6DA5FBF-6079-47EE-9E32-48915B85275F}|AirportTicketBookingSystem.csproj|c:\\users\\zbook\\source\\repos\\airportticketbookingsystem\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F6DA5FBF-6079-47EE-9E32-48915B85275F}|AirportTicketBookingSystem.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -19,6 +31,45 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "Booking.cs",
+              "DocumentMoniker": "C:\\Users\\ZBOOK\\source\\repos\\AirportTicketBookingSystem\\Models\\Booking.cs",
+              "RelativeDocumentMoniker": "Models\\Booking.cs",
+              "ToolTip": "C:\\Users\\ZBOOK\\source\\repos\\AirportTicketBookingSystem\\Models\\Booking.cs",
+              "RelativeToolTip": "Models\\Booking.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAxAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-28T21:50:02.578Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Flight.cs",
+              "DocumentMoniker": "C:\\Users\\ZBOOK\\source\\repos\\AirportTicketBookingSystem\\Models\\Flight.cs",
+              "RelativeDocumentMoniker": "Models\\Flight.cs",
+              "ToolTip": "C:\\Users\\ZBOOK\\source\\repos\\AirportTicketBookingSystem\\Models\\Flight.cs",
+              "RelativeToolTip": "Models\\Flight.cs",
+              "ViewState": "AQIAAAsAAAAA//////8PwBEAAABFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-28T21:49:43.722Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Passenger.cs",
+              "DocumentMoniker": "C:\\Users\\ZBOOK\\source\\repos\\AirportTicketBookingSystem\\Models\\Passenger.cs",
+              "RelativeDocumentMoniker": "Models\\Passenger.cs",
+              "ToolTip": "C:\\Users\\ZBOOK\\source\\repos\\AirportTicketBookingSystem\\Models\\Passenger.cs",
+              "RelativeToolTip": "Models\\Passenger.cs",
+              "ViewState": "AQIAAAYAAACQmZmZmZkvwAsAAAAnAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-28T21:49:23.305Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\ZBOOK\\source\\repos\\AirportTicketBookingSystem\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
