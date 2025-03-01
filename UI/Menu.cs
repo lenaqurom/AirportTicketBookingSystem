@@ -1,4 +1,5 @@
-﻿using AirportTicketBookingSystem.Services;
+﻿using AirportTicketBookingSystem.Models;
+using AirportTicketBookingSystem.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,28 +32,40 @@ namespace AirportTicketBookingSystem.UI
         }
         private void SearchFlights()
         {
-            Console.Write("Enter Departure Country: ");
-            string departure = Console.ReadLine();
+            Console.Write("Enter Departure Country (or press Enter to skip): ");
+            string departureCountry = Console.ReadLine()?.Trim();
 
-            Console.Write("Enter Destination Country: ");
-            string destination = Console.ReadLine();
+            Console.Write("Enter Destination Country (or press Enter to skip): ");
+            string destinationCountry = Console.ReadLine()?.Trim();
 
-            Console.Write("Enter Date (YYYY-MM-DD) or press Enter to skip: ");
-            string dateInput = Console.ReadLine();
-            DateTime? date = string.IsNullOrWhiteSpace(dateInput) ? null : DateTime.Parse(dateInput);
+            Console.Write("Enter Max Price (or press Enter to skip): ");
+            decimal? maxPrice = decimal.TryParse(Console.ReadLine()?.Trim(), out decimal price) ? price : null;
 
-            Console.Write("Enter Seat Class (Economy, Business, First): ");
-            string seatClass = Console.ReadLine();
+            Console.Write("Enter Departure Date (yyyy-MM-dd) (or press Enter to skip): ");
+            DateTime? departureDate = DateTime.TryParse(Console.ReadLine()?.Trim(), out DateTime date) ? date : null;
 
-            var result = _flightService.SearchFlights(departure, destination, date, seatClass);
-            if (result.Count == 0)
+            Console.Write("Enter Departure Airport (or press Enter to skip): ");
+            string departureAirport = Console.ReadLine()?.Trim();
+
+            Console.Write("Enter Arrival Airport (or press Enter to skip): ");
+            string arrivalAirport = Console.ReadLine()?.Trim();
+
+            Console.Write("Enter Class (Economy, Business, First) (or press Enter to skip): ");
+            string flightClass = Console.ReadLine()?.Trim();
+
+            List<Flight> results = _flightService.SearchFlights(departureCountry, destinationCountry, maxPrice, departureDate, departureAirport, arrivalAirport, flightClass);
+
+            if (results.Any())
             {
-                Console.WriteLine("No flights found.");
-                return;
+                Console.WriteLine("\nMatching Flights:");
+                foreach (var flight in results)
+                {
+                    Console.WriteLine($"Flight ID: {flight.FlightId}, From {flight.DepartureCountry} to {flight.DestinationCountry}, Price: {flight.Price}, Date: {flight.DepartureDate}, Class: {flight.Class}");
+                }
             }
-            foreach (var flight in result)
+            else
             {
-                Console.WriteLine($"Flight {flight.FlightId} | {flight.DepartureAirport} → {flight.ArrivalAirport} | {flight.DepartureDate} | Price: {flight.TicketPrices[seatClass]}");
+                Console.WriteLine("No matching flights found.");
             }
         }
     }

@@ -15,16 +15,20 @@ namespace AirportTicketBookingSystem.Services
         {
             _flightRepository = flightRepository;
         }
-        public List<Flight> SearchFlights(string departure, string destination, DateTime? date, string seatClass)
+        public List<Flight> SearchFlights(string? departureCountry, string? destinationCountry, decimal? maxPrice, DateTime? departureDate, string? departureAirport, string? arrivalAirport, string? flightClass)
         {
             var flights = _flightRepository.GetAllFlights();
 
-            return flights.Where(f =>
-            f.DepartureCountry.Equals(departure, StringComparison.OrdinalIgnoreCase) &&
-            f.DestinationCountry.Equals(destination, StringComparison.OrdinalIgnoreCase) &&
-            (!date.HasValue || f.DepartureDate.Date == date.Value.Date) &&
-            f.TicketPrices.ContainsKey(seatClass)
+            var filteredFlights = flights.Where(f =>
+                (string.IsNullOrEmpty(departureCountry) || f.DepartureCountry.Equals(departureCountry, StringComparison.OrdinalIgnoreCase)) &&
+                (string.IsNullOrEmpty(destinationCountry) || f.DestinationCountry.Equals(destinationCountry, StringComparison.OrdinalIgnoreCase)) &&
+                (!departureDate.HasValue || f.DepartureDate.Date == departureDate.Value.Date) &&
+                (string.IsNullOrEmpty(departureAirport) || f.DepartureAirport.Equals(departureAirport, StringComparison.OrdinalIgnoreCase)) &&
+                (string.IsNullOrEmpty(arrivalAirport) || f.ArrivalAirport.Equals(arrivalAirport, StringComparison.OrdinalIgnoreCase)) &&
+                (string.IsNullOrEmpty(flightClass) || (f.TicketPrices.ContainsKey(flightClass) && (!maxPrice.HasValue || f.TicketPrices[flightClass] <= maxPrice.Value)))
             ).ToList();
+
+            return filteredFlights;
         }
     }
 }
