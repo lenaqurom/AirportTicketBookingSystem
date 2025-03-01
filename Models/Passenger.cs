@@ -11,5 +11,7 @@ namespace AirportTicketBookingSystem.Models
         public string Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
+
+        Passenger(string Id, string Name, string Email) { }
     }
 }

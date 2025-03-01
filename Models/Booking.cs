@@ -14,5 +14,6 @@ namespace AirportTicketBookingSystem.Models
         public string SeatClass { get; set; }
         public decimal Price { get; set; }
         public DateTime BookingDate { get; set; }
+
     }
 }

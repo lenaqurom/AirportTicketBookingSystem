@@ -1,4 +1,7 @@
-﻿using System;
+﻿using AirportTicketBookingSystem.Repository;
+using AirportTicketBookingSystem.Services;
+using AirportTicketBookingSystem.UI;
+using System;
 
 namespace AirportTicketBookingSystem
 {
@@ -6,7 +9,11 @@ namespace AirportTicketBookingSystem
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            FlightRepository flightRepository = new FlightRepository();
+            FlightService flightService = new FlightService(flightRepository);
+            Menu menu = new Menu(flightService);
+
+            menu.ShowMainMenu();
         }
     }
 }

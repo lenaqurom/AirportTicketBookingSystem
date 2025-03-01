@@ -1,0 +1,30 @@
+[
+  {
+    "FlightId": "F101",
+    "Airline": "Airways A",
+    "DepartureCountry": "USA",
+    "DestinationCountry": "UK",
+    "DepartureAirport": "JFK",
+    "ArrivalAirport": "Heathrow",
+    "DepartureDate": "2025-03-10T08:30:00",
+    "TicketPrices": {
+      "Economy": 500.00,
+      "Business": 1200.00,
+      "First": 2500.00
+    }
+  },
+  {
+    "FlightId": "F102",
+    "Airline": "SkyJet",
+    "DepartureCountry": "Germany",
+    "DestinationCountry": "France",
+    "DepartureAirport": "Berlin Brandenburg",
+    "ArrivalAirport": "Charles de Gaulle",
+    "DepartureDate": "2025-03-12T15:00:00",
+    "TicketPrices": {
+      "Economy": 150.00,
+      "Business": 450.00,
+      "First": 900.00
+    }
+  }
+]
