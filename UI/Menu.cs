@@ -13,10 +13,12 @@ namespace AirportTicketBookingSystem.UI
     {
         private readonly FlightService _flightService;
         private readonly BookingService _bookingService;
+        private readonly ManagerService _managerService;
         public Menu()
         {
             _flightService = new FlightService();
             _bookingService = new BookingService();
+            _managerService = new ManagerService();
         }
         public void ShowMainMenu()
         {
@@ -29,7 +31,8 @@ namespace AirportTicketBookingSystem.UI
                 Console.WriteLine("4. View Personal Bookings");
                 Console.WriteLine("5. Cancel a Booking");
                 Console.WriteLine("6. Modify a Booking");
-                Console.WriteLine("7. Exit");
+                Console.WriteLine("7. Filter Bookings");
+                Console.WriteLine("8. Exit");
                 Console.Write("Select an option: ");
                 string option = Console.ReadLine();
                 Console.WriteLine();
@@ -55,6 +58,9 @@ namespace AirportTicketBookingSystem.UI
                         _bookingService.ModifyBooking();
                         break;
                     case "7":
+                        _managerService.DisplayFilteredBookings();
+                        break;
+                    case "8":
                         Console.WriteLine("Goodbye!");
                         return;
                     default:
