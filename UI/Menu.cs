@@ -26,7 +26,8 @@ namespace AirportTicketBookingSystem.UI
                 Console.WriteLine("1. Search Flights");
                 Console.WriteLine("2. Book Flight");
                 Console.WriteLine("3. View Bookings");
-                Console.WriteLine("4. Exit");
+                Console.WriteLine("4. View Personal Bookings");
+                Console.WriteLine("5. Exit");
                 Console.Write("Select an option: ");
                 string option = Console.ReadLine();
                 Console.WriteLine();
@@ -43,6 +44,9 @@ namespace AirportTicketBookingSystem.UI
                         ViewBookings();
                         break;
                     case "4":
+                        _bookingService.ViewPersonalBookings();
+                        break;
+                    case "5":
                         Console.WriteLine("Goodbye!");
                         return;
                     default:

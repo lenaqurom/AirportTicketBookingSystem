@@ -48,5 +48,30 @@ namespace AirportTicketBookingSystem.Services
             _bookingRepository.SaveBookings(bookings);
             Console.WriteLine($"Booking successful! {passengerName} booked {selectedClass} class on flight {flightId} for {ticketPrice:C}.");
         }
+        public void ViewPersonalBookings()
+        {
+            Console.Write("Enter your name: ");
+            string passengerName = Console.ReadLine()?.Trim();
+
+            if (string.IsNullOrEmpty(passengerName))
+            {
+                Console.WriteLine("Invalid input. Please enter a valid name.");
+                return;
+            }
+            List<Booking> bookings = _bookingRepository.GetBookingsByPassenger(passengerName);
+            if(bookings.Count == 0)
+            {
+                Console.WriteLine($"No bookings found for {passengerName}.");
+            }
+            else
+            {
+                Console.WriteLine($"\nBookings for {passengerName}:");
+                foreach(var booking in bookings)
+                {
+                    Console.WriteLine($"- Flight: {booking.FlightId}, Class: {booking.Class}, Price: ${booking.Price}");
+                }
+            }
+
+        }
     }
 }

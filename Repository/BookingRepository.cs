@@ -40,5 +40,13 @@ namespace AirportTicketBookingSystem.Repository
                 Console.WriteLine($"Error saving booking data: {ex.Message}");
             }
         }
+        public List<Booking> GetBookingsByPassenger(string passengerName) 
+        { 
+            List<Booking> allBookings = GetAllBookings();
+            List<Booking> passengerBookings = allBookings
+                .Where(p => p.PassengerName.Equals(passengerName, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+            return passengerBookings;
+        }
     }
 }
