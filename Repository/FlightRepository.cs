@@ -20,7 +20,7 @@ namespace AirportTicketBookingSystem.Repository
             try
             {
                 string jsonData = File.ReadAllText(_filePath);
-            return JsonSerializer.Deserialize<List<Flight>>(jsonData) ?? new List<Flight>();
+                return JsonSerializer.Deserialize<List<Flight>>(jsonData) ?? new List<Flight>();
             }
             catch (JsonException ex)
             {
@@ -39,6 +39,11 @@ namespace AirportTicketBookingSystem.Repository
             {
                 Console.WriteLine($"Error saving flight data: {ex.Message}");
             }
+        }
+        public Flight? GetFlightById(string flightId)
+        {
+            List<Flight> flights = GetAllFlights();
+            return flights.FirstOrDefault(f => f.FlightId.Equals(flightId, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

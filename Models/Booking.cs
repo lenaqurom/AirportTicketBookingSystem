@@ -11,7 +11,7 @@ namespace AirportTicketBookingSystem.Models
         public string BookingId { get; set; }
         public string PassengerName { get; set; }
         public string FlightId { get; set; }
-        public string Class { get; set; }
+        public ClassType Class { get; set; }
         public decimal Price { get; set; }
         public DateTime BookingDate { get; set; }
 

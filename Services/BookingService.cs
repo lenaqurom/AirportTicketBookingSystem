@@ -27,12 +27,17 @@ namespace AirportTicketBookingSystem.Services
                 Console.WriteLine("Invalid Flight ID. Please try again.");
                 return;
             }
-            if(!selectedFlight.TicketPrices.ContainsKey(selectedClass))
+            if (!Enum.TryParse(selectedClass, true, out ClassType classType))
+            {
+                Console.WriteLine("Invalid class type. Please enter Economy, Business, or First.");
+                return; 
+            }
+            if (!selectedFlight.TicketPrices.ContainsKey(classType.ToString()))
             {
                 Console.WriteLine("Invalid class selection. Available options: Economy, Business, First.");
                 return;
             }
-            decimal ticketPrice = selectedFlight.TicketPrices[selectedClass];
+            decimal ticketPrice = selectedFlight.TicketPrices[classType.ToString()];
 
             List<Booking> bookings = BookingRepository.GetAllBookings();
             Booking newBooking = new Booking
@@ -40,7 +45,7 @@ namespace AirportTicketBookingSystem.Services
                 BookingId = Guid.NewGuid().ToString(),
                 FlightId = selectedFlight.FlightId,
                 PassengerName = passengerName,
-                Class = selectedClass,
+                Class = classType,
                 Price = ticketPrice,
                 BookingDate = DateTime.UtcNow
             };
@@ -95,6 +100,34 @@ namespace AirportTicketBookingSystem.Services
             else
             {
                 Console.WriteLine("No matching booking found. Please check your details.");
+            }
+        }
+        public void ModifyBooking()
+        {
+            Console.Write("Enter your name: ");
+            string passengerName = Console.ReadLine()?.Trim();
+
+            Console.Write("Enter the Flight ID of the booking you want to modify: ");
+            string flightId = Console.ReadLine()?.Trim();
+
+            Console.Write("Enter new class type (Economy, Business, First): ");
+            string newClass = Console.ReadLine()?.Trim();
+
+            if (string.IsNullOrEmpty(passengerName) || string.IsNullOrEmpty(flightId) || string.IsNullOrEmpty(newClass))
+            {
+                Console.WriteLine("Invalid input. Please enter valid details.");
+                return;
+            }
+
+            bool isModified = _bookingRepository.ModifyBooking(passengerName, flightId, newClass);
+
+            if (isModified)
+            {
+                Console.WriteLine($"Booking for Flight {flightId} has been successfully updated to {newClass} class.");
+            }
+            else
+            {
+                Console.WriteLine("Modification failed. Please check your details and try again.");
             }
         }
     }

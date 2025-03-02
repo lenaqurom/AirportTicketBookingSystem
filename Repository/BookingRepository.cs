@@ -20,7 +20,11 @@ namespace AirportTicketBookingSystem.Repository
             try
             {
                 string jsonData = File.ReadAllText(BookingsFilePath);
-                return JsonSerializer.Deserialize<List<Booking>>(jsonData) ?? new List<Booking>();
+                var options = new JsonSerializerOptions
+                {
+                    Converters = { new ClassTypeConverter() }
+                };
+                return JsonSerializer.Deserialize<List<Booking>>(jsonData, options) ?? new List<Booking>();
             }
             catch (JsonException ex)
             {
@@ -32,7 +36,12 @@ namespace AirportTicketBookingSystem.Repository
         {
             try
             {
-                string jsonData = JsonSerializer.Serialize(bookings, new JsonSerializerOptions { WriteIndented = true});
+                var options = new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    Converters = { new ClassTypeConverter() }
+                };
+                string jsonData = JsonSerializer.Serialize(bookings, options);
                 File.WriteAllText(BookingsFilePath, jsonData);
             }
             catch (Exception ex)
@@ -62,6 +71,42 @@ namespace AirportTicketBookingSystem.Repository
             bookings.Remove(bookingToRemove);
             SaveBookings(bookings);
             return true;
+        }
+        public bool ModifyBooking(string passengerName, string flightId, string newClass)
+        {
+            List<Booking> bookings = GetAllBookings();
+            Booking? bookingToModify = bookings.FirstOrDefault(
+                b => b.PassengerName.Equals(passengerName,StringComparison.OrdinalIgnoreCase) &&
+                b.FlightId.Equals(flightId, StringComparison.OrdinalIgnoreCase)
+                );
+            if(bookingToModify == null)
+            {
+                return false;
+            }
+            if(Enum.TryParse(newClass, true, out ClassType updatedClass))
+            {
+                bookingToModify.Class = updatedClass;
+                bookingToModify.Price = GetUpdatedPrice(flightId, updatedClass);
+            }
+            else
+            {
+                return false;
+            }
+            SaveBookings(bookings);
+            return true;
+        }
+        public decimal GetUpdatedPrice(string flightId, ClassType classType)
+        {
+            FlightRepository flightRepo = new FlightRepository();
+            Flight? flight = flightRepo.GetFlightById(flightId);
+            if(flight == null) { return 0; }
+            return classType switch
+            {
+                ClassType.Economy => flight.TicketPrices["Economy"],
+                ClassType.Business => flight.TicketPrices["Business"],
+                ClassType.First => flight.TicketPrices["First"],
+                _ => 0
+            };
         }
     }
 }

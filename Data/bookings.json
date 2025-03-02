@@ -1,10 +1,10 @@
 [
   {
-    "BookingId": "a6c2e1c0-3bc1-4647-bd71-7511e48c15ff",
+    "BookingId": "648b330c-2bc3-4d4a-81e5-9b0f9ee845ae",
     "PassengerName": "Lina",
     "FlightId": "F101",
-    "Class": "First",
-    "Price": 2500.00,
-    "BookingDate": "2025-03-02T01:19:27.3105508Z"
+    "Class": "Business",
+    "Price": 1200.00,
+    "BookingDate": "2025-03-02T03:08:51.2612101Z"
   }
 ]
