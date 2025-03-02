@@ -48,5 +48,20 @@ namespace AirportTicketBookingSystem.Repository
                 .ToList();
             return passengerBookings;
         }
+        public bool CancelBooking(string passengerName, string flightId)
+        {
+            List<Booking> bookings = GetAllBookings();
+            Booking? bookingToRemove = bookings.FirstOrDefault(
+                b => b.PassengerName.Equals(passengerName, StringComparison.OrdinalIgnoreCase) &&
+                b.FlightId.Equals(flightId, StringComparison.OrdinalIgnoreCase)
+                );
+            if (bookingToRemove == null)
+            {
+                return false;
+            }
+            bookings.Remove(bookingToRemove);
+            SaveBookings(bookings);
+            return true;
+        }
     }
 }

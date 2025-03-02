@@ -1,13 +1,5 @@
 [
   {
-    "BookingId": "07f53f0c-e92e-41b5-a07c-9579a7bf5f68",
-    "PassengerName": "Lina",
-    "FlightId": "F101",
-    "Class": "First",
-    "Price": 2500.00,
-    "BookingDate": "2025-03-02T01:17:45.6085044Z"
-  },
-  {
     "BookingId": "a6c2e1c0-3bc1-4647-bd71-7511e48c15ff",
     "PassengerName": "Lina",
     "FlightId": "F101",

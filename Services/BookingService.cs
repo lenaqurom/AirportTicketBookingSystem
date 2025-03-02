@@ -73,5 +73,29 @@ namespace AirportTicketBookingSystem.Services
             }
 
         }
+        public void CancelBooking()
+        {
+            Console.Write("Enter your name: ");
+            string passengerName = Console.ReadLine()?.Trim();
+
+            Console.Write("Enter the Flight ID you want to cancel: ");
+            string flightId = Console.ReadLine()?.Trim();
+
+            if (string.IsNullOrEmpty(passengerName) || string.IsNullOrEmpty(flightId))
+            {
+                Console.WriteLine("Invalid input. Please enter valid details.");
+                return;
+            }
+
+            bool isCancelled = _bookingRepository.CancelBooking(passengerName, flightId);
+            if (isCancelled)
+            {
+                Console.WriteLine($"Booking for Flight {flightId} has been successfully canceled.");
+            }
+            else
+            {
+                Console.WriteLine("No matching booking found. Please check your details.");
+            }
+        }
     }
 }
