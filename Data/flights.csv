@@ -1,0 +1,6 @@
+FlightId,DepartureCountry,DestinationCountry,DepartureAirport,ArrivalAirport,DepartureDate,EconomyPrice,BusinessPrice,FirstClassPrice
+F101,USA,UK,JFK,LHR,2025-03-15 08:30,500,1200,2500
+F102,Canada,France,YYZ,CDG,2025-03-20 10:00,450,1100,2400
+F103,Germany,Italy,FRA,FCO,2025-04-05 15:45,400,1000,2200
+F104,Japan,Australia,NRT,SYD,2025-05-10 22:00,700,1500,3000
+F105,UAE,India,DXB,DEL,2025-06-18 05:20,350,900,2000

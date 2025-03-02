@@ -68,5 +68,27 @@ namespace AirportTicketBookingSystem.Services
                 }
             }
         }
+        public void ImportFlights()
+        {
+            Console.Write("Enter the path to the CSV file: ");
+            string csvFilePath = Console.ReadLine()?.Trim();
+
+            if (string.IsNullOrEmpty(csvFilePath))
+            {
+                Console.WriteLine("Invalid file path.");
+                return;
+            }
+            FlightRepository flightRepository = new FlightRepository();
+            bool success = flightRepository.ImportFlightsFromCSV(csvFilePath);
+
+            if (success)
+            {
+                Console.WriteLine("Flight data imported successfully.");
+            }
+            else
+            {
+                Console.WriteLine("Failed to import flight data.");
+            }
+        }
     }
 }

@@ -1,7 +1,7 @@
 [
   {
     "FlightId": "F101",
-    "Airline": "Airways A",
+    "FlightName": null,
     "DepartureCountry": "USA",
     "DestinationCountry": "UK",
     "DepartureAirport": "JFK",
@@ -15,7 +15,7 @@
   },
   {
     "FlightId": "F102",
-    "Airline": "SkyJet",
+    "FlightName": null,
     "DepartureCountry": "Germany",
     "DestinationCountry": "France",
     "DepartureAirport": "Berlin Brandenburg",
@@ -25,6 +25,76 @@
       "Economy": 150.00,
       "Business": 450.00,
       "First": 900.00
+    }
+  },
+  {
+    "FlightId": "F101",
+    "FlightName": null,
+    "DepartureCountry": "USA",
+    "DestinationCountry": "UK",
+    "DepartureAirport": "JFK",
+    "ArrivalAirport": "LHR",
+    "DepartureDate": "2025-03-15T08:30:00",
+    "TicketPrices": {
+      "Economy": 500,
+      "Buisness": 1200,
+      "First": 2500
+    }
+  },
+  {
+    "FlightId": "F102",
+    "FlightName": null,
+    "DepartureCountry": "Canada",
+    "DestinationCountry": "France",
+    "DepartureAirport": "YYZ",
+    "ArrivalAirport": "CDG",
+    "DepartureDate": "2025-03-20T10:00:00",
+    "TicketPrices": {
+      "Economy": 450,
+      "Buisness": 1100,
+      "First": 2400
+    }
+  },
+  {
+    "FlightId": "F103",
+    "FlightName": null,
+    "DepartureCountry": "Germany",
+    "DestinationCountry": "Italy",
+    "DepartureAirport": "FRA",
+    "ArrivalAirport": "FCO",
+    "DepartureDate": "2025-04-05T15:45:00",
+    "TicketPrices": {
+      "Economy": 400,
+      "Buisness": 1000,
+      "First": 2200
+    }
+  },
+  {
+    "FlightId": "F104",
+    "FlightName": null,
+    "DepartureCountry": "Japan",
+    "DestinationCountry": "Australia",
+    "DepartureAirport": "NRT",
+    "ArrivalAirport": "SYD",
+    "DepartureDate": "2025-05-10T22:00:00",
+    "TicketPrices": {
+      "Economy": 700,
+      "Buisness": 1500,
+      "First": 3000
+    }
+  },
+  {
+    "FlightId": "F105",
+    "FlightName": null,
+    "DepartureCountry": "UAE",
+    "DestinationCountry": "India",
+    "DepartureAirport": "DXB",
+    "ArrivalAirport": "DEL",
+    "DepartureDate": "2025-06-18T05:20:00",
+    "TicketPrices": {
+      "Economy": 350,
+      "Buisness": 900,
+      "First": 2000
     }
   }
 ]

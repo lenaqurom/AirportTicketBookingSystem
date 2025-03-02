@@ -32,7 +32,8 @@ namespace AirportTicketBookingSystem.UI
                 Console.WriteLine("5. Cancel a Booking");
                 Console.WriteLine("6. Modify a Booking");
                 Console.WriteLine("7. Filter Bookings");
-                Console.WriteLine("8. Exit");
+                Console.WriteLine("8. Batch Flight Upload (CSV Import)");
+                Console.WriteLine("9. Exit");
                 Console.Write("Select an option: ");
                 string option = Console.ReadLine();
                 Console.WriteLine();
@@ -61,12 +62,14 @@ namespace AirportTicketBookingSystem.UI
                         _managerService.DisplayFilteredBookings();
                         break;
                     case "8":
+                        _managerService.ImportFlights();
+                        break;
+                    case "9":
                         Console.WriteLine("Goodbye!");
                         return;
                     default:
                         Console.WriteLine("Invalid selection. Please choose a valid option.");
                         break;
-
                 }
             }
         }
