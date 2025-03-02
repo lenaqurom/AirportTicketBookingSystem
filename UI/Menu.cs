@@ -1,4 +1,5 @@
 ﻿using AirportTicketBookingSystem.Models;
+using AirportTicketBookingSystem.Repository;
 using AirportTicketBookingSystem.Services;
 using System;
 using System.Collections.Generic;
@@ -11,23 +12,44 @@ namespace AirportTicketBookingSystem.UI
     internal class Menu
     {
         private readonly FlightService _flightService;
-        public Menu(FlightService flightService)
+        private readonly BookingService _bookingService;
+        public Menu()
         {
-            _flightService = flightService;
+            _flightService = new FlightService();
+            _bookingService = new BookingService();
         }
         public void ShowMainMenu()
         {
             while (true)
             {
+                Console.WriteLine("\n=== Airport Ticket Booking System ===");
                 Console.WriteLine("1. Search Flights");
-                Console.WriteLine("2. Exit");
-                Console.Write("Choose an option: ");
+                Console.WriteLine("2. Book Flight");
+                Console.WriteLine("3. View Bookings");
+                Console.WriteLine("4. Exit");
+                Console.Write("Select an option: ");
+                string option = Console.ReadLine();
+                Console.WriteLine();
 
-                string choise = Console.ReadLine();
-                if (choise == "1")
-                    SearchFlights();
-                else if (choise == "2")
-                    break;
+                switch (option)
+                {
+                    case "1":
+                        SearchFlights();
+                        break;
+                    case "2":
+                        BookFlight(_bookingService, _flightService);
+                        break;
+                    case "3":
+                        ViewBookings();
+                        break;
+                    case "4":
+                        Console.WriteLine("Goodbye!");
+                        return;
+                    default:
+                        Console.WriteLine("Invalid selection. Please choose a valid option.");
+                        break;
+
+                }
             }
         }
         private void SearchFlights()
@@ -55,17 +77,64 @@ namespace AirportTicketBookingSystem.UI
 
             List<Flight> results = _flightService.SearchFlights(departureCountry, destinationCountry, maxPrice, departureDate, departureAirport, arrivalAirport, flightClass);
 
+            if (string.IsNullOrEmpty(flightClass) ||
+    !(flightClass.Equals("Economy", StringComparison.OrdinalIgnoreCase) ||
+      flightClass.Equals("Business", StringComparison.OrdinalIgnoreCase) ||
+      flightClass.Equals("First", StringComparison.OrdinalIgnoreCase)))
+            {
+                Console.WriteLine("❌ Invalid class. Please enter 'Economy', 'Business', or 'First'.");
+                return;
+            }
+
+            flightClass = char.ToUpper(flightClass[0]) + flightClass.Substring(1).ToLower();
+
             if (results.Any())
             {
                 Console.WriteLine("\nMatching Flights:");
                 foreach (var flight in results)
                 {
-                    Console.WriteLine($"Flight ID: {flight.FlightId}, From {flight.DepartureCountry} to {flight.DestinationCountry}, Price: {flight.Price}, Date: {flight.DepartureDate}, Class: {flight.Class}");
+                    Console.WriteLine($"Flight ID: {flight.FlightId}, From {flight.DepartureCountry} to {flight.DestinationCountry}, Price: {flight.TicketPrices[flightClass]}, Date: {flight.DepartureDate}, Class: {flightClass}");
                 }
             }
             else
             {
                 Console.WriteLine("No matching flights found.");
+            }
+        }
+        private void BookFlight(BookingService bookingSevice, FlightService flightService)
+        {
+            Console.WriteLine("✈️  Booking a Flight...");
+            Console.Write("Enter Flight ID: ");
+            string flightId = Console.ReadLine()?.Trim();
+
+            Console.Write("Enter Class (Economy, Business, First): ");
+            string flightClass = Console.ReadLine()?.Trim();
+
+            Console.Write("Enter your name: ");
+            string passengerName = Console.ReadLine()?.Trim();
+
+            bookingSevice.BookFlight(flightId, flightClass, passengerName);
+        }
+        private void ViewBookings()
+        {
+            List<Booking> bookings = BookingRepository.GetAllBookings();
+            if(bookings.Count == 0)
+            {
+                Console.WriteLine("No bookings found.");
+            }
+            else
+            {
+                Console.WriteLine("Bookings:");
+                foreach(var booking in bookings)
+                {
+                    Console.WriteLine($"Booking ID: {booking.BookingId}");
+                    Console.WriteLine($"Flight ID: {booking.FlightId}");
+                    Console.WriteLine($"Passenger: {booking.PassengerName}");
+                    Console.WriteLine($"Class: {booking.Class}");
+                    Console.WriteLine($"Price: {booking.Price:C}");
+                    Console.WriteLine($"Booking Date: {booking.BookingDate}");
+                    Console.WriteLine(new string('-', 40));
+                }
             }
         }
     }

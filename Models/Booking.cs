@@ -9,11 +9,16 @@ namespace AirportTicketBookingSystem.Models
     internal class Booking
     {
         public string BookingId { get; set; }
-        public Passenger Passenger { get; set; }
-        public Flight Flight { get; set; }
-        public string SeatClass { get; set; }
+        public string PassengerName { get; set; }
+        public string FlightId { get; set; }
+        public string Class { get; set; }
         public decimal Price { get; set; }
         public DateTime BookingDate { get; set; }
+
+        public Booking()
+        {
+            BookingId = Guid.NewGuid().ToString(); 
+        }
 
     }
 }

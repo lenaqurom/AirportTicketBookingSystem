@@ -17,13 +17,28 @@ namespace AirportTicketBookingSystem.Repository
         {
             if (!File.Exists(_filePath))
                 return new List<Flight>();
-            string jsonData = File.ReadAllText(_filePath);
+            try
+            {
+                string jsonData = File.ReadAllText(_filePath);
             return JsonSerializer.Deserialize<List<Flight>>(jsonData) ?? new List<Flight>();
-        } 
+            }
+            catch (JsonException ex)
+            {
+                Console.WriteLine($"Error reading flight data: {ex.Message}");
+                return new List<Flight>();
+            }
+        }
         public void SaveFlights(List<Flight> flights)
         {
-            string jsonData = JsonSerializer.Serialize(flights, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(_filePath, jsonData);
+            try
+            {
+                string jsonData = JsonSerializer.Serialize(flights, new JsonSerializerOptions { WriteIndented = true });
+                File.WriteAllText(_filePath, jsonData);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving flight data: {ex.Message}");
+            }
         }
     }
 }

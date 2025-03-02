@@ -11,9 +11,9 @@ namespace AirportTicketBookingSystem.Services
     internal class FlightService
     {
         private readonly FlightRepository _flightRepository;
-        public FlightService(FlightRepository flightRepository)
+        public FlightService()
         {
-            _flightRepository = flightRepository;
+            _flightRepository = new FlightRepository();
         }
         public List<Flight> SearchFlights(string? departureCountry, string? destinationCountry, decimal? maxPrice, DateTime? departureDate, string? departureAirport, string? arrivalAirport, string? flightClass)
         {

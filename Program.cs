@@ -9,9 +9,7 @@ namespace AirportTicketBookingSystem
     {
         static void Main(string[] args)
         {
-            FlightRepository flightRepository = new FlightRepository();
-            FlightService flightService = new FlightService(flightRepository);
-            Menu menu = new Menu(flightService);
+            Menu menu = new Menu();
 
             menu.ShowMainMenu();
         }
