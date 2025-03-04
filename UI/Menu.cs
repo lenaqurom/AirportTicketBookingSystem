@@ -25,15 +25,43 @@ namespace AirportTicketBookingSystem.UI
             while (true)
             {
                 Console.WriteLine("\n=== Airport Ticket Booking System ===");
+                Console.WriteLine("1. Passenger Menu");
+                Console.WriteLine("2. Manager Menu");
+                Console.WriteLine("3. Exit");
+                Console.Write("Select an option: ");
+                string option = Console.ReadLine();
+                Console.WriteLine();
+
+                switch (option)
+                {
+                    case "1":
+                        ShowPassengerMenu();
+                        break;
+                    case "2":
+                        ShowManagerMenu();
+                        break;
+                    case "3":
+                        Console.WriteLine("Goodbye!");
+                        return;
+                    default:
+                        Console.WriteLine("Invalid selection. Please choose a valid option.");
+                        break;
+                }
+            }
+        }
+        private void ShowPassengerMenu()
+        {
+            while (true)
+            {
+                Console.WriteLine("\n=== Passenger Menu ===");
                 Console.WriteLine("1. Search Flights");
-                Console.WriteLine("2. Book Flight");
-                Console.WriteLine("3. View Bookings");
-                Console.WriteLine("4. View Personal Bookings");
-                Console.WriteLine("5. Cancel a Booking");
-                Console.WriteLine("6. Modify a Booking");
-                Console.WriteLine("7. Filter Bookings");
-                Console.WriteLine("8. Batch Flight Upload (CSV Import)");
-                Console.WriteLine("9. Exit");
+                Console.WriteLine("2. View Flights");
+                Console.WriteLine("3. Book Flight");
+                Console.WriteLine("4. View Bookings");
+                Console.WriteLine("5. View Personal Bookings");
+                Console.WriteLine("6. Cancel a Booking");
+                Console.WriteLine("7. Modify a Booking");
+                Console.WriteLine("8. Back to Main Menu");
                 Console.Write("Select an option: ");
                 string option = Console.ReadLine();
                 Console.WriteLine();
@@ -44,28 +72,57 @@ namespace AirportTicketBookingSystem.UI
                         SearchFlights();
                         break;
                     case "2":
-                        BookFlight(_bookingService, _flightService);
+                        ViewAllFlights();
                         break;
                     case "3":
-                        ViewBookings();
+                        BookFlight(_bookingService, _flightService);
                         break;
                     case "4":
-                        _bookingService.ViewPersonalBookings();
+                        ViewBookings();
                         break;
                     case "5":
-                        _bookingService.CancelBooking();
+                        _bookingService.ViewPersonalBookings();
                         break;
                     case "6":
-                        _bookingService.ModifyBooking();
+                        _bookingService.CancelBooking();
                         break;
                     case "7":
-                        _managerService.DisplayFilteredBookings();
+                        _bookingService.ModifyBooking();
                         break;
                     case "8":
+                        return;
+                    default:
+                        Console.WriteLine("Invalid selection. Please choose a valid option.");
+                        break;
+                }
+            }
+        }
+
+        private void ShowManagerMenu()
+        {
+            while (true)
+            {
+                Console.WriteLine("\n=== Manager Menu ===");
+                Console.WriteLine("1. View All Bookings");
+                Console.WriteLine("2. Filter Bookings");
+                Console.WriteLine("3. Batch Flight Upload (CSV Import)");
+                Console.WriteLine("4. Back to Main Menu");
+                Console.Write("Select an option: ");
+                string option = Console.ReadLine();
+                Console.WriteLine();
+
+                switch (option)
+                {
+                    case "1":
+                        ViewBookings();
+                        break;
+                    case "2":
+                        _managerService.DisplayFilteredBookings();
+                        break;
+                    case "3":
                         _managerService.ImportFlights();
                         break;
-                    case "9":
-                        Console.WriteLine("Goodbye!");
+                    case "4":
                         return;
                     default:
                         Console.WriteLine("Invalid selection. Please choose a valid option.");
@@ -121,6 +178,23 @@ namespace AirportTicketBookingSystem.UI
             {
                 Console.WriteLine("No matching flights found.");
             }
+        }
+        private void ViewAllFlights()
+        {
+            List<Flight> flights = _flightService.ViewFlights();
+            if (flights.Any())
+            {
+                Console.WriteLine("\nMatching Flights:");
+                foreach (var flight in flights)
+                {
+                    Console.WriteLine($"Flight ID: {flight.FlightId}, From {flight.DepartureCountry} to {flight.DestinationCountry}, Price: {flight.TicketPrices}, Date: {flight.DepartureDate}, Class: ");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No matching flights found.");
+            }
+
         }
         private void BookFlight(BookingService bookingSevice, FlightService flightService)
         {

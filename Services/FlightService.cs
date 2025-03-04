@@ -59,5 +59,9 @@ namespace AirportTicketBookingSystem.Services
 
             return filteredFlights;
         }
+        public List<Flight> ViewFlights()
+        {
+            return _flightRepository.GetAllFlights();
+        }
     }
 }

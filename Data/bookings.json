@@ -6,5 +6,13 @@
     "Class": "Business",
     "Price": 1200.00,
     "BookingDate": "2025-03-02T03:08:51.2612101Z"
+  },
+  {
+    "BookingId": "d32ea96f-36a9-4cea-836b-dcb2dadd28fe",
+    "PassengerName": "lolo",
+    "FlightId": "F102",
+    "Class": "First",
+    "Price": 900.00,
+    "BookingDate": "2025-03-03T23:43:04.0659791Z"
   }
 ]
