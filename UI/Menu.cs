@@ -106,7 +106,8 @@ namespace AirportTicketBookingSystem.UI
                 Console.WriteLine("1. View All Bookings");
                 Console.WriteLine("2. Filter Bookings");
                 Console.WriteLine("3. Batch Flight Upload (CSV Import)");
-                Console.WriteLine("4. Back to Main Menu");
+                Console.WriteLine("4. Dynamic Model Validation Details");
+                Console.WriteLine("5. Back to Main Menu");
                 Console.Write("Select an option: ");
                 string option = Console.ReadLine();
                 Console.WriteLine();
@@ -123,6 +124,9 @@ namespace AirportTicketBookingSystem.UI
                         _managerService.ImportFlights();
                         break;
                     case "4":
+                        _managerService.DynamicModelValidationDetails();
+                        break;
+                    case "5":
                         return;
                     default:
                         Console.WriteLine("Invalid selection. Please choose a valid option.");

@@ -1,35 +1,6 @@
 [
   {
     "FlightId": "F101",
-    "FlightName": null,
-    "DepartureCountry": "USA",
-    "DestinationCountry": "UK",
-    "DepartureAirport": "JFK",
-    "ArrivalAirport": "Heathrow",
-    "DepartureDate": "2025-03-10T08:30:00",
-    "TicketPrices": {
-      "Economy": 500.00,
-      "Business": 1200.00,
-      "First": 2500.00
-    }
-  },
-  {
-    "FlightId": "F102",
-    "FlightName": null,
-    "DepartureCountry": "Germany",
-    "DestinationCountry": "France",
-    "DepartureAirport": "Berlin Brandenburg",
-    "ArrivalAirport": "Charles de Gaulle",
-    "DepartureDate": "2025-03-12T15:00:00",
-    "TicketPrices": {
-      "Economy": 150.00,
-      "Business": 450.00,
-      "First": 900.00
-    }
-  },
-  {
-    "FlightId": "F101",
-    "FlightName": null,
     "DepartureCountry": "USA",
     "DestinationCountry": "UK",
     "DepartureAirport": "JFK",
@@ -43,7 +14,6 @@
   },
   {
     "FlightId": "F102",
-    "FlightName": null,
     "DepartureCountry": "Canada",
     "DestinationCountry": "France",
     "DepartureAirport": "YYZ",
@@ -57,7 +27,6 @@
   },
   {
     "FlightId": "F103",
-    "FlightName": null,
     "DepartureCountry": "Germany",
     "DestinationCountry": "Italy",
     "DepartureAirport": "FRA",
@@ -71,7 +40,6 @@
   },
   {
     "FlightId": "F104",
-    "FlightName": null,
     "DepartureCountry": "Japan",
     "DestinationCountry": "Australia",
     "DepartureAirport": "NRT",
@@ -85,7 +53,6 @@
   },
   {
     "FlightId": "F105",
-    "FlightName": null,
     "DepartureCountry": "UAE",
     "DestinationCountry": "India",
     "DepartureAirport": "DXB",

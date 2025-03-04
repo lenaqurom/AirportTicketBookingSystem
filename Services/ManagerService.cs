@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using AirportTicketBookingSystem.Models;
@@ -119,6 +120,19 @@ namespace AirportTicketBookingSystem.Services
             else
             {
                 Console.WriteLine("Failed to import flight data.");
+            }
+        }
+        public void DynamicModelValidationDetails()
+        {
+            var validationDetails = Flight.GetValidationConstraints();
+
+            foreach (var field in validationDetails)
+            {
+                Console.WriteLine($"{field.Key}:");
+                foreach (var constraint in field.Value)
+                {
+                    Console.WriteLine($"  - {constraint}");
+                }
             }
         }
     }
