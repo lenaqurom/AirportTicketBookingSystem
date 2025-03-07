@@ -21,7 +21,9 @@ namespace AirportTicketBookingSystem.Repository
             try
             {
                 string jsonData = await File.ReadAllTextAsync(_filePath);
-                return JsonSerializer.Deserialize<List<Flight>>(jsonData) ?? new List<Flight>();
+                List<Flight> flights = JsonSerializer.Deserialize<List<Flight>>(jsonData) ?? new List<Flight>();
+
+                return flights.Where(f => ValidateFlight(f, out List<string> _)).ToList();
             }
             catch (JsonException ex)
             {
@@ -66,7 +68,13 @@ namespace AirportTicketBookingSystem.Repository
                     {
                         errors.AddRange(lineErrors);
                         continue;
-                    }                 
+                    }
+                    if (flights.Any(f => f.FlightId == newFlight?.FlightId))
+                    {
+                        errors.Add($"Line {i + 1}: Flight ID '{newFlight?.FlightId}' already exists.");
+                        continue;
+                    }
+
                     flights.Add(newFlight);
                 }
 
@@ -86,6 +94,36 @@ namespace AirportTicketBookingSystem.Repository
                 Console.WriteLine($"Error importing flights: {ex.Message}");
                 return false;
             }
+        }
+
+        private bool ValidateFlight(Flight flight, out List<string> errorMessages)
+        {
+            errorMessages = new List<string>();
+
+            if (string.IsNullOrWhiteSpace(flight.FlightId))
+                errorMessages.Add("Flight ID is empty.");
+            if (string.IsNullOrWhiteSpace(flight.DepartureCountry))
+                errorMessages.Add("Departure Country is empty.");
+            if (string.IsNullOrWhiteSpace(flight.DestinationCountry))
+                errorMessages.Add("Destination Country is empty.");
+            if (string.IsNullOrWhiteSpace(flight.DepartureAirport))
+                errorMessages.Add("Departure Airport is empty.");
+            if (string.IsNullOrWhiteSpace(flight.ArrivalAirport))
+                errorMessages.Add("Arrival Airport is empty.");
+
+            if (flight.DepartureDate == default)
+                errorMessages.Add("Departure Date is invalid.");
+
+            if (flight.TicketPrices == null || !flight.TicketPrices.Any())
+                errorMessages.Add("Ticket prices are not defined or invalid.");
+
+            foreach (var price in flight.TicketPrices.Values)
+            {
+                if (price <= 0)
+                    errorMessages.Add("Ticket price cannot be negative.");
+            }
+
+            return !errorMessages.Any();
         }
 
         private bool ValidateCsvLine(string line, int lineNumber, out List<string> errorMessages, out Flight? flight)
