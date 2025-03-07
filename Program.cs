@@ -10,7 +10,7 @@ namespace AirportTicketBookingSystem
     {
         static async Task  Main(string[] args)
         {
-            Menu menu = new Menu();
+            MainMenu menu = new MainMenu();
 
             await menu.ShowMainMenu();
         }

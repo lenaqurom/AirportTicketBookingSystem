@@ -5,10 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AirportTicketBookingSystem.Models;
+using AirportTicketBookingSystem.Services.Interfaces;
+using AirportTicketBookingSystem.Models.Enums;
 
 namespace AirportTicketBookingSystem.Services
 {
-    internal class BookingService
+    internal class BookingService : IBookingService
     {
         private readonly FlightRepository _flightRepository;
         private readonly BookingRepository _bookingRepository;

@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using AirportTicketBookingSystem.Models;
 using AirportTicketBookingSystem.Repository;
+using AirportTicketBookingSystem.Services.Interfaces;
 
 namespace AirportTicketBookingSystem.Services
 {
-    internal class FlightService
+    internal class FlightService : IFlightService
     {
         private readonly FlightRepository _flightRepository;
         public FlightService()
@@ -44,7 +45,7 @@ namespace AirportTicketBookingSystem.Services
             
             return errors;
         }
-        public async Task<List<Flight>> SearchFlights(string? departureCountry, string? destinationCountry, decimal? maxPrice, DateTime? departureDate, string? departureAirport, string? arrivalAirport, string? flightClass)
+        public async Task<List<Flight>> SearchFlightsAsync(string? departureCountry, string? destinationCountry, decimal? maxPrice, DateTime? departureDate, string? departureAirport, string? arrivalAirport, string? flightClass)
         {
             var flights = await _flightRepository.GetAllFlightsAsync();
 

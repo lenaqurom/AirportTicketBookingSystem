@@ -6,10 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using AirportTicketBookingSystem.Models;
 using AirportTicketBookingSystem.Repository;
+using AirportTicketBookingSystem.Services.Interfaces;
 
 namespace AirportTicketBookingSystem.Services
 {
-    internal class ManagerService
+    internal class ManagerService : IManagerService
     {
         private readonly FlightRepository _flightRepository;
         public ManagerService() 

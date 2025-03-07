@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using AirportTicketBookingSystem.Models;
+using AirportTicketBookingSystem.Models.Enums;
 
 public class ClassTypeConverter : JsonConverter<ClassType>
 {
