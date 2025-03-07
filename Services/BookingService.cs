@@ -17,9 +17,9 @@ namespace AirportTicketBookingSystem.Services
             _flightRepository = new FlightRepository();
             _bookingRepository = new BookingRepository();
         }
-        public void BookFlight(string flightId, string selectedClass, string passengerName)
+        public async Task BookFlightAsync(string flightId, string selectedClass, string passengerName)
         {
-            List<Flight> flights = _flightRepository.GetAllFlights();
+            List<Flight> flights = await _flightRepository.GetAllFlightsAsync();
             Flight? selectedFlight = flights.FirstOrDefault(f => f.FlightId == flightId);
 
             if(selectedFlight == null)
@@ -39,21 +39,17 @@ namespace AirportTicketBookingSystem.Services
             }
             decimal ticketPrice = selectedFlight.TicketPrices[classType.ToString()];
 
-            List<Booking> bookings = BookingRepository.GetAllBookings();
-            Booking newBooking = new Booking
-            {
-                BookingId = Guid.NewGuid().ToString(),
-                FlightId = selectedFlight.FlightId,
-                PassengerName = passengerName,
-                Class = classType,
-                Price = ticketPrice,
-                BookingDate = DateTime.UtcNow
-            };
+            Passenger passenger = new Passenger(passengerName);
+
+
+            List<Booking> bookings = await BookingRepository.GetAllBookingsAsync();
+            Booking newBooking = new Booking(passenger, selectedFlight.FlightId, classType, ticketPrice);
+
             bookings.Add(newBooking);
-            _bookingRepository.SaveBookings(bookings);
+            await _bookingRepository.SaveBookingsAsync(bookings);
             Console.WriteLine($"Booking successful! {passengerName} booked {selectedClass} class on flight {flightId} for {ticketPrice:C}.");
         }
-        public void ViewPersonalBookings()
+        public async Task ViewPersonalBookingsAsync()
         {
             Console.Write("Enter your name: ");
             string passengerName = Console.ReadLine()?.Trim();
@@ -63,7 +59,7 @@ namespace AirportTicketBookingSystem.Services
                 Console.WriteLine("Invalid input. Please enter a valid name.");
                 return;
             }
-            List<Booking> bookings = _bookingRepository.GetBookingsByPassenger(passengerName);
+            List<Booking> bookings = await _bookingRepository.GetBookingsByPassengerAsync(passengerName);
             if(bookings.Count == 0)
             {
                 Console.WriteLine($"No bookings found for {passengerName}.");
@@ -78,7 +74,7 @@ namespace AirportTicketBookingSystem.Services
             }
 
         }
-        public void CancelBooking()
+        public async Task CancelBookingAsync()
         {
             Console.Write("Enter your name: ");
             string passengerName = Console.ReadLine()?.Trim();
@@ -92,7 +88,7 @@ namespace AirportTicketBookingSystem.Services
                 return;
             }
 
-            bool isCancelled = _bookingRepository.CancelBooking(passengerName, flightId);
+            bool isCancelled = await _bookingRepository.CancelBookingAsync(passengerName, flightId);
             if (isCancelled)
             {
                 Console.WriteLine($"Booking for Flight {flightId} has been successfully canceled.");
@@ -102,7 +98,7 @@ namespace AirportTicketBookingSystem.Services
                 Console.WriteLine("No matching booking found. Please check your details.");
             }
         }
-        public void ModifyBooking()
+        public async Task ModifyBookingAsync()
         {
             Console.Write("Enter your name: ");
             string passengerName = Console.ReadLine()?.Trim();
@@ -119,7 +115,7 @@ namespace AirportTicketBookingSystem.Services
                 return;
             }
 
-            bool isModified = _bookingRepository.ModifyBooking(passengerName, flightId, newClass);
+            bool isModified = await _bookingRepository.ModifyBookingAsync(passengerName, flightId, newClass);
 
             if (isModified)
             {

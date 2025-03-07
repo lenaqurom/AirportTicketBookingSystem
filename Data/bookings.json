@@ -1,18 +1,35 @@
 [
   {
-    "BookingId": "648b330c-2bc3-4d4a-81e5-9b0f9ee845ae",
-    "PassengerName": "Lina",
-    "FlightId": "F101",
-    "Class": "Business",
-    "Price": 1200.00,
-    "BookingDate": "2025-03-02T03:08:51.2612101Z"
-  },
-  {
-    "BookingId": "d32ea96f-36a9-4cea-836b-dcb2dadd28fe",
-    "PassengerName": "lolo",
+    "BookingId": "2f879987-d53a-446b-9eff-1f85a79c0ea8",
+    "Passenger": {
+      "Id": "82b33a29-ea38-4f2b-ab7c-b2202fec12db",
+      "Name": "Lolo"
+    },
     "FlightId": "F102",
     "Class": "First",
-    "Price": 900.00,
-    "BookingDate": "2025-03-03T23:43:04.0659791Z"
+    "Price": 2400,
+    "BookingDate": "2025-03-07T01:31:02.2027535+02:00"
+  },
+  {
+    "BookingId": "1b3189f7-a188-40d9-9f30-4ec9b7070e26",
+    "Passenger": {
+      "Id": "08beb667-4c0c-4ed1-9eb5-c93aa3ca1734",
+      "Name": "Lolooo"
+    },
+    "FlightId": "F101",
+    "Class": "First",
+    "Price": 2500,
+    "BookingDate": "2025-03-07T02:31:10.6457859+02:00"
+  },
+  {
+    "BookingId": "0e3c429e-e9de-4c6d-be9d-ece10223ce07",
+    "Passenger": {
+      "Id": "eb3a9b15-76e8-48db-af36-0de1aba38a45",
+      "Name": "Linaa"
+    },
+    "FlightId": "F101",
+    "Class": "First",
+    "Price": 2500,
+    "BookingDate": "2025-03-07T03:35:30.462686+02:00"
   }
 ]

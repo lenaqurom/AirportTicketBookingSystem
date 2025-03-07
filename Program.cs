@@ -2,16 +2,17 @@
 using AirportTicketBookingSystem.Services;
 using AirportTicketBookingSystem.UI;
 using System;
+using System.Runtime.CompilerServices;
 
 namespace AirportTicketBookingSystem
 {
     class AirportTicketBookingSystemMain
     {
-        static void Main(string[] args)
+        static async Task  Main(string[] args)
         {
             Menu menu = new Menu();
 
-            menu.ShowMainMenu();
+            await menu.ShowMainMenu();
         }
     }
 }

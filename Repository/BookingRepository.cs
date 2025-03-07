@@ -11,18 +11,20 @@ namespace AirportTicketBookingSystem.Repository
     internal class BookingRepository
     {
         private static readonly string BookingsFilePath = "C:\\\\Users\\\\ZBOOK\\\\source\\\\repos\\\\AirportTicketBookingSystem\\\\Data\\\\bookings.json";
-        public static List<Booking> GetAllBookings()
+        public static async Task<List<Booking>> GetAllBookingsAsync()
         {
             if(!File.Exists(BookingsFilePath) || new FileInfo(BookingsFilePath).Length == 0)
             {
+                Console.WriteLine($"File does not Exist.");
                 return new List<Booking>();
             }
             try
             {
-                string jsonData = File.ReadAllText(BookingsFilePath);
+                string jsonData = await File.ReadAllTextAsync(BookingsFilePath);
                 var options = new JsonSerializerOptions
                 {
-                    Converters = { new ClassTypeConverter() }
+                    Converters = { new ClassTypeConverter() },
+                    IncludeFields = true
                 };
                 return JsonSerializer.Deserialize<List<Booking>>(jsonData, options) ?? new List<Booking>();
             }
@@ -32,7 +34,7 @@ namespace AirportTicketBookingSystem.Repository
                 return new List<Booking>();
             }
         }
-        public void SaveBookings(List<Booking> bookings)
+        public async Task SaveBookingsAsync(List<Booking> bookings)
         {
             try
             {
@@ -42,26 +44,26 @@ namespace AirportTicketBookingSystem.Repository
                     Converters = { new ClassTypeConverter() }
                 };
                 string jsonData = JsonSerializer.Serialize(bookings, options);
-                File.WriteAllText(BookingsFilePath, jsonData);
+                await File.WriteAllTextAsync(BookingsFilePath, jsonData);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error saving booking data: {ex.Message}");
             }
         }
-        public List<Booking> GetBookingsByPassenger(string passengerName) 
+        public async Task<List<Booking>> GetBookingsByPassengerAsync(string passengerName) 
         { 
-            List<Booking> allBookings = GetAllBookings();
+            List<Booking> allBookings = await GetAllBookingsAsync();
             List<Booking> passengerBookings = allBookings
-                .Where(p => p.PassengerName.Equals(passengerName, StringComparison.OrdinalIgnoreCase))
+                .Where(p => p.Passenger.Name.Equals(passengerName, StringComparison.OrdinalIgnoreCase))
                 .ToList();
             return passengerBookings;
         }
-        public bool CancelBooking(string passengerName, string flightId)
+        public async Task<bool> CancelBookingAsync(string passengerName, string flightId)
         {
-            List<Booking> bookings = GetAllBookings();
+            List<Booking> bookings = await GetAllBookingsAsync();
             Booking? bookingToRemove = bookings.FirstOrDefault(
-                b => b.PassengerName.Equals(passengerName, StringComparison.OrdinalIgnoreCase) &&
+                b => b.Passenger.Name.Equals(passengerName, StringComparison.OrdinalIgnoreCase) &&
                 b.FlightId.Equals(flightId, StringComparison.OrdinalIgnoreCase)
                 );
             if (bookingToRemove == null)
@@ -69,14 +71,14 @@ namespace AirportTicketBookingSystem.Repository
                 return false;
             }
             bookings.Remove(bookingToRemove);
-            SaveBookings(bookings);
+            await SaveBookingsAsync(bookings);
             return true;
         }
-        public bool ModifyBooking(string passengerName, string flightId, string newClass)
+        public async Task<bool> ModifyBookingAsync(string passengerName, string flightId, string newClass)
         {
-            List<Booking> bookings = GetAllBookings();
+            List<Booking> bookings = await GetAllBookingsAsync();
             Booking? bookingToModify = bookings.FirstOrDefault(
-                b => b.PassengerName.Equals(passengerName,StringComparison.OrdinalIgnoreCase) &&
+                b => b.Passenger.Name.Equals(passengerName,StringComparison.OrdinalIgnoreCase) &&
                 b.FlightId.Equals(flightId, StringComparison.OrdinalIgnoreCase)
                 );
             if(bookingToModify == null)
@@ -86,19 +88,19 @@ namespace AirportTicketBookingSystem.Repository
             if(Enum.TryParse(newClass, true, out ClassType updatedClass))
             {
                 bookingToModify.Class = updatedClass;
-                bookingToModify.Price = GetUpdatedPrice(flightId, updatedClass);
+                bookingToModify.Price = await GetUpdatedPriceAsync(flightId, updatedClass);
             }
             else
             {
                 return false;
             }
-            SaveBookings(bookings);
+            await SaveBookingsAsync(bookings);
             return true;
         }
-        public decimal GetUpdatedPrice(string flightId, ClassType classType)
+        public async Task<decimal> GetUpdatedPriceAsync(string flightId, ClassType classType)
         {
             FlightRepository flightRepo = new FlightRepository();
-            Flight? flight = flightRepo.GetFlightById(flightId);
+            Flight? flight = await flightRepo.GetFlightByIdAsync(flightId);
             if(flight == null) { return 0; }
             return classType switch
             {

@@ -44,9 +44,9 @@ namespace AirportTicketBookingSystem.Services
             
             return errors;
         }
-        public List<Flight> SearchFlights(string? departureCountry, string? destinationCountry, decimal? maxPrice, DateTime? departureDate, string? departureAirport, string? arrivalAirport, string? flightClass)
+        public async Task<List<Flight>> SearchFlights(string? departureCountry, string? destinationCountry, decimal? maxPrice, DateTime? departureDate, string? departureAirport, string? arrivalAirport, string? flightClass)
         {
-            var flights = _flightRepository.GetAllFlights();
+            var flights = await _flightRepository.GetAllFlightsAsync();
 
             var filteredFlights = flights.Where(f =>
                 (string.IsNullOrEmpty(departureCountry) || f.DepartureCountry.Equals(departureCountry, StringComparison.OrdinalIgnoreCase)) &&
@@ -59,9 +59,9 @@ namespace AirportTicketBookingSystem.Services
 
             return filteredFlights;
         }
-        public List<Flight> ViewFlights()
+        public async Task<List<Flight>> ViewFlightsAsync()
         {
-            return _flightRepository.GetAllFlights();
+            return await _flightRepository.GetAllFlightsAsync();
         }
     }
 }

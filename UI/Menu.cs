@@ -20,7 +20,7 @@ namespace AirportTicketBookingSystem.UI
             _bookingService = new BookingService();
             _managerService = new ManagerService();
         }
-        public void ShowMainMenu()
+        public async Task ShowMainMenu()
         {
             while (true)
             {
@@ -35,10 +35,10 @@ namespace AirportTicketBookingSystem.UI
                 switch (option)
                 {
                     case "1":
-                        ShowPassengerMenu();
+                        await ShowPassengerMenuAsync();
                         break;
                     case "2":
-                        ShowManagerMenu();
+                        await ShowManagerMenuAsync();
                         break;
                     case "3":
                         Console.WriteLine("Goodbye!");
@@ -49,7 +49,7 @@ namespace AirportTicketBookingSystem.UI
                 }
             }
         }
-        private void ShowPassengerMenu()
+        private async Task ShowPassengerMenuAsync()
         {
             while (true)
             {
@@ -69,25 +69,25 @@ namespace AirportTicketBookingSystem.UI
                 switch (option)
                 {
                     case "1":
-                        SearchFlights();
+                        await SearchFlightsAsync();
                         break;
                     case "2":
-                        ViewAllFlights();
+                        await ViewAllFlightsAsync();
                         break;
                     case "3":
-                        BookFlight(_bookingService, _flightService);
+                        await BookFlightAsync(_bookingService, _flightService);
                         break;
                     case "4":
-                        ViewBookings();
+                        await ViewBookingsAsync();
                         break;
                     case "5":
-                        _bookingService.ViewPersonalBookings();
+                        await _bookingService.ViewPersonalBookingsAsync();
                         break;
                     case "6":
-                        _bookingService.CancelBooking();
+                        await _bookingService.CancelBookingAsync();
                         break;
                     case "7":
-                        _bookingService.ModifyBooking();
+                        await _bookingService.ModifyBookingAsync();
                         break;
                     case "8":
                         return;
@@ -98,7 +98,7 @@ namespace AirportTicketBookingSystem.UI
             }
         }
 
-        private void ShowManagerMenu()
+        private async Task ShowManagerMenuAsync()
         {
             while (true)
             {
@@ -115,13 +115,13 @@ namespace AirportTicketBookingSystem.UI
                 switch (option)
                 {
                     case "1":
-                        ViewBookings();
+                        await ViewBookingsAsync();
                         break;
                     case "2":
-                        _managerService.DisplayFilteredBookings();
+                        await _managerService.DisplayFilteredBookingsAsync();
                         break;
                     case "3":
-                        _managerService.ImportFlights();
+                        await _managerService.ImportFlightsAsync();
                         break;
                     case "4":
                         _managerService.DynamicModelValidationDetails();
@@ -134,7 +134,7 @@ namespace AirportTicketBookingSystem.UI
                 }
             }
         }
-        private void SearchFlights()
+        private async Task SearchFlightsAsync()
         {
             Console.Write("Enter Departure Country (or press Enter to skip): ");
             string departureCountry = Console.ReadLine()?.Trim();
@@ -157,7 +157,7 @@ namespace AirportTicketBookingSystem.UI
             Console.Write("Enter Class (Economy, Business, First) (or press Enter to skip): ");
             string flightClass = Console.ReadLine()?.Trim();
 
-            List<Flight> results = _flightService.SearchFlights(departureCountry, destinationCountry, maxPrice, departureDate, departureAirport, arrivalAirport, flightClass);
+            List<Flight> results = await _flightService.SearchFlights(departureCountry, destinationCountry, maxPrice, departureDate, departureAirport, arrivalAirport, flightClass);
 
             if (string.IsNullOrEmpty(flightClass) ||
     !(flightClass.Equals("Economy", StringComparison.OrdinalIgnoreCase) ||
@@ -183,9 +183,9 @@ namespace AirportTicketBookingSystem.UI
                 Console.WriteLine("No matching flights found.");
             }
         }
-        private void ViewAllFlights()
+        private async Task ViewAllFlightsAsync()
         {
-            List<Flight> flights = _flightService.ViewFlights();
+            List<Flight> flights = await _flightService.ViewFlightsAsync();
             if (flights.Any())
             {
                 Console.WriteLine("\nMatching Flights:");
@@ -200,7 +200,7 @@ namespace AirportTicketBookingSystem.UI
             }
 
         }
-        private void BookFlight(BookingService bookingSevice, FlightService flightService)
+        private async Task BookFlightAsync(BookingService bookingSevice, FlightService flightService)
         {
             Console.WriteLine("✈️  Booking a Flight...");
             Console.Write("Enter Flight ID: ");
@@ -212,11 +212,11 @@ namespace AirportTicketBookingSystem.UI
             Console.Write("Enter your name: ");
             string passengerName = Console.ReadLine()?.Trim();
 
-            bookingSevice.BookFlight(flightId, flightClass, passengerName);
+            await bookingSevice.BookFlightAsync(flightId, flightClass, passengerName);
         }
-        private void ViewBookings()
+        private async Task ViewBookingsAsync()
         {
-            List<Booking> bookings = BookingRepository.GetAllBookings();
+            List<Booking> bookings = await BookingRepository.GetAllBookingsAsync();
             if(bookings.Count == 0)
             {
                 Console.WriteLine("No bookings found.");
@@ -228,7 +228,7 @@ namespace AirportTicketBookingSystem.UI
                 {
                     Console.WriteLine($"Booking ID: {booking.BookingId}");
                     Console.WriteLine($"Flight ID: {booking.FlightId}");
-                    Console.WriteLine($"Passenger: {booking.PassengerName}");
+                    Console.WriteLine($"Passenger: {booking.Passenger.Name}");
                     Console.WriteLine($"Class: {booking.Class}");
                     Console.WriteLine($"Price: {booking.Price:C}");
                     Console.WriteLine($"Booking Date: {booking.BookingDate}");

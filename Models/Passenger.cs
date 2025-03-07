@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace AirportTicketBookingSystem.Models
 {
@@ -10,8 +11,10 @@ namespace AirportTicketBookingSystem.Models
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        public string Email { get; set; }
-
-        Passenger(string Id, string Name, string Email) { }
+        public Passenger(string name) 
+        {
+            Id = Guid.NewGuid().ToString();
+            Name = name;
+        }
     }
 }

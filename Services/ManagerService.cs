@@ -11,14 +11,12 @@ namespace AirportTicketBookingSystem.Services
 {
     internal class ManagerService
     {
-        private readonly BookingRepository _bookingRepository;
         private readonly FlightRepository _flightRepository;
         public ManagerService() 
         {
-            _bookingRepository = new BookingRepository();
             _flightRepository = new FlightRepository();
         }
-        public List<Booking> FilterBookings(
+        public async Task<List<Booking>> FilterBookingsAsync(
             string? flightId = null,
             decimal? maxPrice = null,
             string? departureCountry = null,
@@ -29,13 +27,13 @@ namespace AirportTicketBookingSystem.Services
             string? passengerName = null,
             string? flightClass = null)
         {
-            List<Booking> bookings = BookingRepository.GetAllBookings();
-            List<Flight> flights = _flightRepository.GetAllFlights();
+            List<Booking> bookings = await BookingRepository.GetAllBookingsAsync();
+            List<Flight> flights = await _flightRepository.GetAllFlightsAsync();
 
             var filteredBooking = from booking in bookings
                                   join flight in flights on booking.FlightId equals flight.FlightId
                                   where (string.IsNullOrEmpty(flightId) || booking.FlightId.Equals(flightId, StringComparison.OrdinalIgnoreCase)) &&
-                                  (string.IsNullOrEmpty(passengerName) || booking.PassengerName.Equals(passengerName, StringComparison.OrdinalIgnoreCase)) &&
+                                  (string.IsNullOrEmpty(passengerName) || booking.Passenger.Name.Equals(passengerName, StringComparison.OrdinalIgnoreCase)) &&
                                   (maxPrice == null || booking.Price <= maxPrice) &&
                                   (string.IsNullOrEmpty(flightClass) || booking.Class.ToString().Equals(flightClass, StringComparison.OrdinalIgnoreCase)) &&
                                   (string.IsNullOrEmpty(departureCountry) || flight.DepartureCountry.Equals(departureCountry, StringComparison.OrdinalIgnoreCase)) &&
@@ -47,7 +45,7 @@ namespace AirportTicketBookingSystem.Services
 
             return filteredBooking.Distinct().ToList();
         }
-        public void DisplayFilteredBookings()
+        public async Task DisplayFilteredBookingsAsync()
         {
             Console.Write("Enter Flight ID (or press Enter to skip): ");
             string? flightId = Console.ReadLine()?.Trim();
@@ -84,7 +82,7 @@ namespace AirportTicketBookingSystem.Services
             string? flightClass = Console.ReadLine()?.Trim();
             if (string.IsNullOrEmpty(flightClass)) flightClass = null;
 
-            List<Booking> filteredBookings = FilterBookings(flightId, maxPrice, departureCountry, destinationCountry, departureDate, departureAirport, arrivalAirport, passengerName, flightClass);
+            List<Booking> filteredBookings = await FilterBookingsAsync(flightId, maxPrice, departureCountry, destinationCountry, departureDate, departureAirport, arrivalAirport, passengerName, flightClass);
 
             if (filteredBookings.Count == 0)
             {
@@ -95,12 +93,12 @@ namespace AirportTicketBookingSystem.Services
                 Console.WriteLine("\nFiltered Bookings:");
                 foreach (var booking in filteredBookings)
                 {
-                    Console.WriteLine($"- Flight: {booking.FlightId}, Passenger: {booking.PassengerName}, Class: {booking.Class}, Price: {booking.Price:C}");
+                    Console.WriteLine($"- Flight: {booking.FlightId}, Passenger: {booking.Passenger.Name}, Class: {booking.Class}, Price: {booking.Price:C}");
                 }
             }
         }
 
-        public void ImportFlights()
+        public async Task ImportFlightsAsync()
         {
             Console.Write("Enter the path to the CSV file: ");
             string csvFilePath = Console.ReadLine()?.Trim();
@@ -111,7 +109,7 @@ namespace AirportTicketBookingSystem.Services
                 return;
             }
             FlightRepository flightRepository = new FlightRepository();
-            bool success = flightRepository.ImportFlightsFromCSV(csvFilePath);
+            bool success = await flightRepository.ImportFlightsFromCSVAsync(csvFilePath);
 
             if (success)
             {

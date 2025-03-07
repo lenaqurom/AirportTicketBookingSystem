@@ -14,13 +14,13 @@ namespace AirportTicketBookingSystem.Repository
     {
         private readonly string _filePath = "C:\\Users\\ZBOOK\\source\\repos\\AirportTicketBookingSystem\\Data\\flights.json";
 
-        public List<Flight> GetAllFlights()
+        public async Task<List<Flight>> GetAllFlightsAsync()
         {
             if (!File.Exists(_filePath) || new FileInfo(_filePath).Length == 0)
                 return new List<Flight>();
             try
             {
-                string jsonData = File.ReadAllText(_filePath);
+                string jsonData = await File.ReadAllTextAsync(_filePath);
                 return JsonSerializer.Deserialize<List<Flight>>(jsonData) ?? new List<Flight>();
             }
             catch (JsonException ex)
@@ -29,31 +29,31 @@ namespace AirportTicketBookingSystem.Repository
                 return new List<Flight>();
             }
         }
-        public void SaveFlights(List<Flight> flights)
+        public async Task SaveFlightsAsync(List<Flight> flights)
         {
             try
             {
                 string jsonData = JsonSerializer.Serialize(flights, new JsonSerializerOptions { WriteIndented = true });
-                File.WriteAllText(_filePath, jsonData);
+                File.WriteAllTextAsync(_filePath, jsonData);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error saving flight data: {ex.Message}");
             }
         }
-        public Flight? GetFlightById(string flightId)
+        public async Task<Flight?> GetFlightByIdAsync(string flightId)
         {
-            List<Flight> flights = GetAllFlights();
-            return flights.FirstOrDefault(f => f.FlightId.Equals(flightId, StringComparison.OrdinalIgnoreCase));
+            List<Flight> flights = await GetAllFlightsAsync();
+            return flights.Where(f => f.FlightId.Equals(flightId, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
         }
-        public bool ImportFlightsFromCSV(string csvFilePath)
+        public async Task<bool> ImportFlightsFromCSVAsync(string csvFilePath)
         {
             if(!File.Exists(csvFilePath))
             {
                 Console.WriteLine("CSV file not found.");
                 return false;
             }
-            List<Flight> flights = GetAllFlights();
+            List<Flight> flights = await GetAllFlightsAsync();
             List<string> errors = new List<string>();
 
             try
@@ -62,59 +62,11 @@ namespace AirportTicketBookingSystem.Repository
                 for (int i = 1; i < lines.Length; i++)
                 {
                     string line = lines[i];
-                    string[] parts = line.Split(",");
-
-                    if (parts.Length < 9)
+                    if (!ValidateCsvLine(line, i, out List<string> lineErrors, out Flight? newFlight))
                     {
-                        errors.Add($"Line {i + 1}: Invalid format, expected at least 9 fields.");
+                        errors.AddRange(lineErrors);
                         continue;
-                    }
-                    string flightId = parts[0].Trim();
-                    string departureCountry = parts[1].Trim();
-                    string destinationCountry = parts[2].Trim();
-                    string departureAirport = parts[3].Trim();
-                    string arrivalAirport = parts[4].Trim();
-
-                    if (string.IsNullOrWhiteSpace(flightId) ||
-                        string.IsNullOrWhiteSpace(departureCountry) ||
-                        string.IsNullOrWhiteSpace(destinationCountry) ||
-                        string.IsNullOrWhiteSpace(departureAirport) ||
-                        string.IsNullOrWhiteSpace(arrivalAirport))
-                    {
-                        errors.Add($"Line {i + 1}: One or more required fields are empty.");
-                        continue;
-                    }
-
-                    if (!DateTime.TryParseExact(parts[5], "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime departureDate))
-                    {
-                        errors.Add($"Line {i + 1}: Invalid departure date format.");
-                        continue;
-                    }
-
-                    if (!decimal.TryParse(parts[6].Trim(), out decimal economyPrice) || economyPrice < 0 ||
-                        !decimal.TryParse(parts[7].Trim(), out decimal businessPrice) || businessPrice < 0 ||
-                        !decimal.TryParse(parts[8].Trim(), out decimal firstClassPrice) || firstClassPrice < 0)
-                    {
-                        errors.Add($"Line {i + 1}: Invalid or negative ticket prices.");
-                        continue;
-                    }
-
-                    Dictionary<string, decimal> ticketPrices = new Dictionary<string, decimal>
-                    {
-                        { "Economy", decimal.Parse(parts[6].Trim())},
-                        { "Buisness", decimal.Parse(parts[7].Trim())},
-                        { "First", decimal.Parse(parts[8].Trim())}
-                    };
-                    Flight newFlight = new Flight
-                    {
-                        FlightId = flightId,
-                        DepartureCountry = departureCountry,
-                        DestinationCountry = destinationCountry,
-                        DepartureAirport = departureAirport,
-                        ArrivalAirport = arrivalAirport,
-                        DepartureDate = departureDate,
-                        TicketPrices = ticketPrices
-                    };
+                    }                 
                     flights.Add(newFlight);
                 }
 
@@ -125,7 +77,7 @@ namespace AirportTicketBookingSystem.Repository
                     return false;
                 }
 
-                SaveFlights(flights);
+                await SaveFlightsAsync(flights);
                 Console.WriteLine("Flights imported successfully.");
                 return true;
             }
@@ -134,6 +86,69 @@ namespace AirportTicketBookingSystem.Repository
                 Console.WriteLine($"Error importing flights: {ex.Message}");
                 return false;
             }
+        }
+
+        private bool ValidateCsvLine(string line, int lineNumber, out List<string> errorMessages, out Flight? flight)
+        {
+            errorMessages = new List<string>();
+            flight = null;
+
+            string[] parts = line.Split(",");
+
+            if (parts.Length < 9)
+            {
+                errorMessages.Add($"Line {lineNumber + 1}: Invalid format, expected at least 9 fields.");
+                return false;
+            }
+            string flightId = parts[0].Trim();
+            string departureCountry = parts[1].Trim();
+            string destinationCountry = parts[2].Trim();
+            string departureAirport = parts[3].Trim();
+            string arrivalAirport = parts[4].Trim();
+
+            if (string.IsNullOrWhiteSpace(flightId))
+                errorMessages.Add($"Line {lineNumber + 1}: Flight ID is empty.");
+            if (string.IsNullOrWhiteSpace(departureCountry))
+                errorMessages.Add($"Line {lineNumber + 1}: Departure Country is empty.");
+            if (string.IsNullOrWhiteSpace(destinationCountry))
+                errorMessages.Add($"Line {lineNumber + 1}: Destination Country is empty.");
+            if (string.IsNullOrWhiteSpace(departureAirport))
+                errorMessages.Add($"Line {lineNumber + 1}: Departure Airport is empty.");
+            if (string.IsNullOrWhiteSpace(arrivalAirport))
+                errorMessages.Add($"Line {lineNumber + 1}: Arrival Airport is empty.");
+
+            if (!DateTime.TryParseExact(parts[5], "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime departureDate))
+                errorMessages.Add($"Line {lineNumber + 1}: Invalid departure date format (Expected: yyyy-MM-dd HH:mm).");
+
+            if (!decimal.TryParse(parts[6].Trim(), out decimal economyPrice) || economyPrice < 0)
+                errorMessages.Add($"Line {lineNumber + 1}: Invalid economy class ticket price.");
+            if (!decimal.TryParse(parts[7].Trim(), out decimal businessPrice) || businessPrice < 0)
+                errorMessages.Add($"Line {lineNumber + 1}: Invalid business class ticket price.");
+            if (!decimal.TryParse(parts[8].Trim(), out decimal firstClassPrice) || firstClassPrice < 0)
+                errorMessages.Add($"Line {lineNumber + 1}: Invalid first class ticket price.");
+
+            if (errorMessages.Any())
+                return false;
+
+            Dictionary<string, decimal> ticketPrices = new Dictionary<string, decimal>
+            {
+                        { "Economy", decimal.Parse(parts[6].Trim())},
+                        { "Buisness", decimal.Parse(parts[7].Trim())},
+                        { "First", decimal.Parse(parts[8].Trim())}
+            };
+
+            Flight newFlight = new Flight
+            {
+                FlightId = flightId,
+                DepartureCountry = departureCountry,
+                DestinationCountry = destinationCountry,
+                DepartureAirport = departureAirport,
+                ArrivalAirport = arrivalAirport,
+                DepartureDate = departureDate,
+                TicketPrices = ticketPrices
+            };
+
+            return true;
         }
     }
 }
