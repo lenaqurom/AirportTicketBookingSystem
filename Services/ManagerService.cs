@@ -12,10 +12,10 @@ namespace AirportTicketBookingSystem.Services
 {
     internal class ManagerService : IManagerService
     {
-        private readonly FlightRepository _flightRepository;
-        public ManagerService() 
+        private readonly IFlightRepository _flightRepository;
+        public ManagerService(IFlightRepository flightRepository) 
         {
-            _flightRepository = new FlightRepository();
+            _flightRepository = flightRepository;
         }
         public async Task<List<Booking>> FilterBookingsAsync(
             string? flightId = null,

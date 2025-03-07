@@ -1,6 +1,7 @@
 ﻿using AirportTicketBookingSystem.Models;
 using AirportTicketBookingSystem.Repository;
 using AirportTicketBookingSystem.Services;
+using AirportTicketBookingSystem.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,15 +16,15 @@ namespace AirportTicketBookingSystem.UI
         private readonly ManagerMenu _managerMenu;
         private readonly DisplayHelper _displayHelper;
 
-        private readonly FlightService _flightService;
-        private readonly BookingService _bookingService;
-        private readonly ManagerService _managerService;
+        private readonly IFlightService _flightService;
+        private readonly IBookingService _bookingService;
+        private readonly IManagerService _managerService;
 
-        public MainMenu()
+        public MainMenu(IFlightService flightService, IBookingService bookingService, IManagerService managerService)
         {
-            _flightService = new FlightService();
-            _bookingService = new BookingService();
-            _managerService = new ManagerService();
+            _flightService = flightService;
+            _bookingService = bookingService;
+            _managerService = managerService;
             _displayHelper = new DisplayHelper(_flightService, _bookingService, _managerService);
 
             _passengerMenu = new PassengerMenu(_flightService, _bookingService, _displayHelper);

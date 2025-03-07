@@ -1,6 +1,7 @@
 ﻿using AirportTicketBookingSystem.Models;
 using AirportTicketBookingSystem.Repository;
 using AirportTicketBookingSystem.Services;
+using AirportTicketBookingSystem.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +12,11 @@ namespace AirportTicketBookingSystem.UI
 {
     internal class DisplayHelper
     {
-        private readonly ManagerService _managerService;
-        private readonly FlightService _flightService;
-        private readonly BookingService _bookingService;
+        private readonly IManagerService _managerService;
+        private readonly IFlightService _flightService;
+        private readonly IBookingService _bookingService;
 
-        public DisplayHelper(FlightService flightService, BookingService bookingService, ManagerService managerService)
+        public DisplayHelper(IFlightService flightService, IBookingService bookingService, IManagerService managerService)
         {
             _flightService = flightService;
             _bookingService = bookingService;
@@ -109,7 +110,7 @@ namespace AirportTicketBookingSystem.UI
 
         }
 
-        public async Task DisplayBookFlightAsync(BookingService bookingSevice, FlightService flightService)
+        public async Task DisplayBookFlightAsync(IBookingService bookingSevice, IFlightService flightService)
         {
             Console.WriteLine("✈️  Booking a Flight...");
             Console.Write("Enter Flight ID: ");

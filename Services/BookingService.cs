@@ -12,12 +12,12 @@ namespace AirportTicketBookingSystem.Services
 {
     internal class BookingService : IBookingService
     {
-        private readonly FlightRepository _flightRepository;
-        private readonly BookingRepository _bookingRepository;
-        public BookingService()
+        private readonly IFlightRepository _flightRepository;
+        private readonly IBookingRepository _bookingRepository;
+        public BookingService(IFlightRepository flightRepository, IBookingRepository bookingRepository)
         {
-            _flightRepository = new FlightRepository();
-            _bookingRepository = new BookingRepository();
+            _flightRepository = flightRepository;
+            _bookingRepository = bookingRepository;
         }
         public async Task BookFlightAsync(string flightId, string selectedClass, string passengerName)
         {

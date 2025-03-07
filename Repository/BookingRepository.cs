@@ -9,7 +9,7 @@ using AirportTicketBookingSystem.Models.Enums;
 
 namespace AirportTicketBookingSystem.Repository
 {
-    internal class BookingRepository
+    internal class BookingRepository : IBookingRepository
     {
         private static readonly string BookingsFilePath = "C:\\\\Users\\\\ZBOOK\\\\source\\\\repos\\\\AirportTicketBookingSystem\\\\Data\\\\bookings.json";
         public static async Task<List<Booking>> GetAllBookingsAsync()

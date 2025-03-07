@@ -1,6 +1,7 @@
 ﻿using AirportTicketBookingSystem.Models;
 using AirportTicketBookingSystem.Repository;
 using AirportTicketBookingSystem.Services;
+using AirportTicketBookingSystem.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +12,11 @@ namespace AirportTicketBookingSystem.UI
 {
     internal class PassengerMenu
     {
-        private readonly FlightService _flightService;
-        private readonly BookingService _bookingService;
+        private readonly IFlightService _flightService;
+        private readonly IBookingService _bookingService;
         private readonly DisplayHelper _displayHelper;
 
-        public PassengerMenu(FlightService flightService, BookingService bookingService, DisplayHelper displayHelper)
+        public PassengerMenu(IFlightService flightService, IBookingService bookingService, DisplayHelper displayHelper)
         {
             _flightService = flightService;
             _bookingService = bookingService;

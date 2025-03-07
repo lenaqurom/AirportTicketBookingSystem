@@ -11,10 +11,10 @@ namespace AirportTicketBookingSystem.Services
 {
     internal class FlightService : IFlightService
     {
-        private readonly FlightRepository _flightRepository;
-        public FlightService()
+        private readonly IFlightRepository _flightRepository;
+        public FlightService(IFlightRepository flightRepository)
         {
-            _flightRepository = new FlightRepository();
+            _flightRepository = flightRepository;
         }
         public List<string> ValidateFlightData(Flight flight, List<string> existingFlightIds)
         {

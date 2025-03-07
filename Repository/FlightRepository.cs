@@ -10,7 +10,7 @@ using System.Globalization;
 
 namespace AirportTicketBookingSystem.Repository
 {
-    internal class FlightRepository
+    internal class FlightRepository : IFlightRepository
     {
         private readonly string _filePath = "C:\\Users\\ZBOOK\\source\\repos\\AirportTicketBookingSystem\\Data\\flights.json";
 
